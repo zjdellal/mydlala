@@ -3,16 +3,21 @@ package com.dlalacore.dlala.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-
+//utilisateurs_id_utilisateur_seq
 @Entity
 @Table(name = "utilisateurs")
 public class Utilisateur {
+	@Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_utilisateur")
+  @SequenceGenerator(name = "id_utilisateur", 
+      sequenceName = "utilisateurs_id_utilisateur_seq", schema = "public", allocationSize=1)
 	@Column(name="id_utilisateur")
-	private @Id @GeneratedValue Integer	id;
+	private  Integer	id;
 
 	@Column(name = "nom_utilisateur")
 	private String										nom_utilisateur;

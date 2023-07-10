@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages={
+"com.spring.beans"})
 public class DlalaApplication {
 
 	public static void main(String[] args) {

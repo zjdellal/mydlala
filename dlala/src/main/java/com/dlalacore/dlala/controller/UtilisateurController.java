@@ -13,8 +13,8 @@ import com.dlalacore.dlala.services.UtilisateursService;
 @RestController
 @RequestMapping("/api/utilisateurs")
 public class UtilisateurController {
-	@Autowired
-	UtilisateursService userService;
+	@Autowired(required=true)
+	private UtilisateursService userService;
 
 	@GetMapping("/utilisateursListe")
 	public List<Utilisateur> getUtilisateurs() {
