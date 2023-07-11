@@ -1,5 +1,7 @@
 package com.dlalacore.dlala.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,32 +10,42 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 //utilisateurs_id_utilisateur_seq
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "utilisateurs")
-public class Utilisateur {
+public class Utilisateur implements Serializable {
 	@Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_utilisateur")
-  @SequenceGenerator(name = "id_utilisateur", 
-      sequenceName = "utilisateurs_id_utilisateur_seq", schema = "public", allocationSize=1)
-	@Column(name="id_utilisateur")
-	private  Integer	id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_utilisateur")
+	@SequenceGenerator(name = "id_utilisateur", sequenceName = "utilisateurs_id_utilisateur_seq", schema = "public", allocationSize = 1)
+	@Column(name = "id_utilisateur")
+	private Integer	id;
 
 	@Column(name = "nom_utilisateur")
-	private String										nom_utilisateur;
+	private String	nom_utilisateur;
 
 	@Column(name = "prenom_utilisateur")
-	private String										prenom_utilisateur;
+	private String	prenom_utilisateur;
 
 	@Column(name = "courriel_utilisateur")
-	
-	private String										courriel_utilisateur;
+
+	private String	courriel_utilisateur;
 
 	@Column(name = "password_utilisateur")
-	private String										password_utilisateur;
+	private String	password_utilisateur;
 
 	public Utilisateur() {
-		
+
+	}
+
+	public Utilisateur(String nom, String prenom, String courriel, String password) {
+		this.nom_utilisateur = nom;
+		this.prenom_utilisateur = prenom;
+		this.courriel_utilisateur = courriel;
+		this.password_utilisateur = password;
+
 	}
 
 	public Integer getId() {
@@ -55,6 +67,5 @@ public class Utilisateur {
 	public String getPassword_utilisateur() {
 		return password_utilisateur;
 	}
-	
-	
+
 }
