@@ -4,14 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,17 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dlalacore.dlala.entities.Utilisateur;
 import com.dlalacore.dlala.exception.UtilisateurNotFoundException;
 import com.dlalacore.dlala.reposetories.UtilisateurReposetorie;
-import com.dlalacore.dlala.services.UtilisateursService;
 
 @RestController
-// @RequestMapping(value = "/")
+@RequestMapping(value = "/")
 public class UtilisateurController {
-//	@Autowired(required = true)
-//	private UtilisateursService			userService;
+	// @Autowired(required = true)
+	// private UtilisateursService userService;
 	@Autowired()
-	private UtilisateurReposetorie	repositorie;
+	private UtilisateurReposetorie repositorie;
 
-	@RequestMapping(value = "/utilisateurs")
+	@PostMapping(value = "/utilisateurs")
 	public @ResponseBody List<Utilisateur> getUtilisateurs() {
 		System.out.println("allo liste user");
 		return repositorie.findAll();
@@ -39,6 +34,7 @@ public class UtilisateurController {
 	@RequestMapping(value = "/utilisateur/{id}")
 	@ResponseBody
 	public Utilisateur getUtilisateurByName(@PathVariable Integer id) {
+		System.out.println("user");
 		return repositorie.findById(id).orElseThrow(() -> new UtilisateurNotFoundException(id));
 	}
 
@@ -57,19 +53,27 @@ public class UtilisateurController {
 	}
 
 	@RequestMapping(value = "deleteUtilisateur/{id}")
-	
-	public void deleteUtilisateur( @PathVariable Integer id) {
+
+	public void deleteUtilisateur(@PathVariable Integer id) {
 		System.out.println("allo delete user");
 		repositorie.deleteById(id);
-		return;
+
 	}
 
-	// @Override
-	// public CautDto save(CautDto caut) {
-	// CautDto dto = client.post("/cauts", caut, new
-	// ParameterizedTypeReference<CautDto>() {
-	// });
-	// return dto;
-	// }
+	@RequestMapping(value = "majUser/{id}")
+	public Utilisateur replaceUtilisateur(@RequestBody Utilisateur majUser, @PathVariable Integer id) {
+System.out.println("put request");
+		return repositorie.findById(id).map(user -> {
+			user.setNom_utilisateur(majUser.getNom_utilisateur());
+			user.setPrenom_utilisateur(majUser.getPrenom_utilisateur());
+			return repositorie.save(user);
+		}).orElseGet(() -> {
+			majUser.setId(id);
+			return repositorie.save(majUser);
+		});
+
+	}
+
+
 
 }

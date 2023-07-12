@@ -68,5 +68,16 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+	     <profile>
+            <id>HAL_BROWSER</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-rest-hal-browser</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+	</profiles>
 
 </project>
