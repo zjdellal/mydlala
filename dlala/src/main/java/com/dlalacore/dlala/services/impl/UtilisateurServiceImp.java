@@ -12,18 +12,18 @@ import com.dlalacore.dlala.services.UtilisateursService;
 @Service
 public class UtilisateurServiceImp implements UtilisateursService {
 	@Autowired
-	UtilisateurReposetorie utilisateurrepo;
+	UtilisateurReposetorie repositorie;
 
 	@Override
 	public Utilisateur save(Utilisateur utilisateur) {
 		// TODO Auto-generated method stub
-		return null;
+		return repositorie.save(utilisateur);
 	}
 
 	@Override
 	public List<Utilisateur> getAll() {
 
-		return utilisateurrepo.findAll();
+		return repositorie.findAll();
 	}
 
 	@Override

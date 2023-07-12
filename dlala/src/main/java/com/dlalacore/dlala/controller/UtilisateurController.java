@@ -3,8 +3,8 @@ package com.dlalacore.dlala.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dlalacore.dlala.entities.Utilisateur;
@@ -20,34 +21,55 @@ import com.dlalacore.dlala.exception.UtilisateurNotFoundException;
 import com.dlalacore.dlala.reposetories.UtilisateurReposetorie;
 import com.dlalacore.dlala.services.UtilisateursService;
 
-@Controller
+@RestController
+// @RequestMapping(value = "/")
 public class UtilisateurController {
-	@Autowired(required = true)
-	private UtilisateursService			userService;
-	@Autowired
+//	@Autowired(required = true)
+//	private UtilisateursService			userService;
+	@Autowired()
 	private UtilisateurReposetorie	repositorie;
 
-	@RequestMapping(value="/utilisateurs")
+	@RequestMapping(value = "/utilisateurs")
 	public @ResponseBody List<Utilisateur> getUtilisateurs() {
+		System.out.println("allo liste user");
 		return repositorie.findAll();
 
 	}
 
-	@RequestMapping(value="/utilisateur/{id}")
+	@RequestMapping(value = "/utilisateur/{id}")
 	@ResponseBody
 	public Utilisateur getUtilisateurByName(@PathVariable Integer id) {
 		return repositorie.findById(id).orElseThrow(() -> new UtilisateurNotFoundException(id));
 	}
 
 	// pas pour le moment
-	
-	@RequestMapping(value="/addUtilisateur/", produces = "application/json", 
-		  method=RequestMethod.POST)
-	public Utilisateur addUtilisateur() {
-//		@PathVariable String nom, @PathVariable String prenom,
-//    @PathVariable String courriel, @PathVariable String password
-		Utilisateur newUtilisateur = new Utilisateur();
+
+	@RequestMapping(value = "/addUtilisateur/{nom}/{prenom}/{courriel}/{password}")
+	@ResponseStatus(HttpStatus.CREATED)
+
+	public Utilisateur addUtilisateur(@RequestBody @PathVariable String nom, @PathVariable String prenom,
+	    @PathVariable String courriel, @PathVariable String password) {
+
+		Utilisateur newUtilisateur = new Utilisateur(nom, prenom, courriel, password);
+
 		return repositorie.save(newUtilisateur);
+
 	}
+
+	@RequestMapping(value = "deleteUtilisateur/{id}")
+	
+	public void deleteUtilisateur( @PathVariable Integer id) {
+		System.out.println("allo delete user");
+		repositorie.deleteById(id);
+		return;
+	}
+
+	// @Override
+	// public CautDto save(CautDto caut) {
+	// CautDto dto = client.post("/cauts", caut, new
+	// ParameterizedTypeReference<CautDto>() {
+	// });
+	// return dto;
+	// }
 
 }
